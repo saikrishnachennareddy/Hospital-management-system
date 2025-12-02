@@ -26,8 +26,7 @@ def load_user(user_id):
 # ----------------------------------------------------
 # DATABASE SETUP (SQLite for Render)
 # ----------------------------------------------------
-# NOTE: SQLite FILE WILL BE CREATED AUTOMATICALLY
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hms.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./hms.db'  # force DB to be created in root
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -269,7 +268,7 @@ def search():
 
 
 # ----------------------------------------------------
-# REMOVE app.run() FOR RENDER (Gunicorn will run app)
+# AUTO-CREATE DATABASE TABLES ON RENDER
 # ----------------------------------------------------
-# Do NOT add: app.run()
-
+with app.app_context():
+    db.create_all()
